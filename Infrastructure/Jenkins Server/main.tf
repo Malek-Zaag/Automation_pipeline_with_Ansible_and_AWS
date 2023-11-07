@@ -139,4 +139,11 @@ resource "azurerm_virtual_machine" "jenkins_server" {
   os_profile_linux_config {
     disable_password_authentication = false
   }
+
+  provisioner "remote-exec" {
+    inline = ["sudo apt update",
+      "sudo apt install python3 ",
+      "sudo apt install ansible",
+    ]
+  }
 }
