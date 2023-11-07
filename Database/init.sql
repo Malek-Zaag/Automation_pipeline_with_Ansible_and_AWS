@@ -1,0 +1,1 @@
+CREATE TABLE book ( id SERIAL PRIMARY KEY, title VARCHAR(255), author VARCHAR(255), publication_date DATE );
