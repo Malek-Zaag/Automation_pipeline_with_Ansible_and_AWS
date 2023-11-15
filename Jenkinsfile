@@ -21,7 +21,7 @@ pipeline {
             echo "======== executing stage ========"
             sh "terraform --version"
             dir ("./Infrastructure/EC2/") {
-                sh "terraform init"
+                sh "terraform init --upgrade"
                 sh "terraform plan"
             }
         }
