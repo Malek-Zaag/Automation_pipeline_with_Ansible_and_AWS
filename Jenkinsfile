@@ -20,8 +20,10 @@ pipeline {
         steps {
             echo "======== executing stage ========"
             sh "terraform --version"
-            dir "./Infrastructure/EC2/"
-            sh "terraform plan"
+            dir ("./Infrastructure/EC2/") {
+                sh "terraform init"
+                sh "terraform plan"
+            }
         }
     }
   }
