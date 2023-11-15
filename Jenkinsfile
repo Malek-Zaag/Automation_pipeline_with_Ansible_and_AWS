@@ -3,6 +3,7 @@ pipeline {
   stages {
     stage('Stage 1') {
       steps {
+        echo "======== executing stage ========"
         echo 'Hello world!'
       }
     }
@@ -13,6 +14,15 @@ pipeline {
         sh "ls -ltr"
         sh "java --version"
       }
+    }
+
+    stage("checking terraform and provisionning servers") {
+        steps {
+            echo "======== executing stage ========"
+            sh "terraform --version"
+            dir "./Infrastructure/EC2/"
+            sh "terraform plan"
+        }
     }
   }
 }
