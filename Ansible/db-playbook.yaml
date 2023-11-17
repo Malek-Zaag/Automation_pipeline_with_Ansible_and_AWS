@@ -1,67 +1,54 @@
 - name:  install database
   hosts: ec2_db
   become: yes
+  vars_files:
+    - vars.yaml
   tasks:
     - name: execute 'ls'
       command: ls
-    
     - name: install updates
-      ansible.builtin.dnf: update_cache=yes
+      apt: update_cache=yes
     
     - name: Install required system packages
-      ansible.builtin.dnf:
+      apt:
         state: present
         name:
             - ca-certificates
-            - collectd-curl
+            - curl
             - python3-pip
             - virtualenv
             - python3-setuptools
         update_cache: true
 
-    # - name: Add Docker GPG apt Key
-    #   apt_key:
-    #       url: https://download.docker.com/linux/ubuntu/gpg
-    #       state: present
+    - name: Add Docker GPG apt Key
+      apt_key:
+          url: https://download.docker.com/linux/ubuntu/gpg
+          state: present
 
-    # - name: Add Docker Repository
-    #   apt_repository:
-    #       repo: deb https://download.docker.com/linux/ubuntu focal stable
-    #       state: present
+    - name: Add Docker Repository
+      apt_repository:
+          repo: deb https://download.docker.com/linux/ubuntu focal stable
+          state: present
 
-    # - name: Update apt and install docker-ce
-    #   apt:
-    #       name: docker-ce
-    #       state: latest
-    #       update_cache: true
-    - name: Install required packages
-      yum:
-        name:
-          - docker
-          - docker-compose
+    - name: Update apt and install docker-ce
+      apt:
+          name: docker-ce
+          state: latest
+          update_cache: true
+    
+    - name: Install AWS CLI
+      become: yes
+      apt:
+        name: awscli
         state: present
 
-    - name: Start and enable Docker service
-      systemd:
-        name: docker
-        state: started
-        enabled: yes
-  
-
-    - name: Configure AWS CLI with Access Key
-      command: >
-                aws configure set aws_access_key_id "{{ AWS_ACCESS_KEY_ID }}"
-                && aws configure set aws_secret_access_key "{{ AWS_SECRET_ACCESS_KEY }}"
-                && aws configure set default.region "{{ eu-central-1 }}"
-      when: ansible_os_family == 'Debian'  # Adjust based on the OS family of your hosts               
-
-    - name: Log into AWS account
-      command: aws sts get-caller-identity
-      register: aws_login_output
-      when: ansible_os_family == 'Debian'   
-            
-    - name: Log in to Amazon ECR
-      shell: "$(aws ecr get-login --region eu-central-1)"
+    - name: Authenticate Docker to ECR
+      command: "aws ecr get-login-password --region eu-central-1"
+      register: ecr_auth
+      environment:
+        AWS_ACCESS_KEY_ID: "{{ your_aws_access_key }}"
+        AWS_SECRET_ACCESS_KEY: "{{ your_aws_secret_key }}"
+      changed_when: false
 
     - name: start db  
       command: 

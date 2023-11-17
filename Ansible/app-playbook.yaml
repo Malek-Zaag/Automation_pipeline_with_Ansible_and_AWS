@@ -50,10 +50,6 @@
         AWS_SECRET_ACCESS_KEY: "{{ your_aws_secret_key }}"
       changed_when: false
 
-    - name: Run Docker login command
-      shell: "{{ ecr_auth.stdout }}"
-      when: ecr_auth is succeeded
-
     - name: start app  
       command: 
         cmd: 'docker run --name app -e DB_USER="admin" -e DB_PASS="admin" -e DB_HOST={{DB_IP}} -p 4000:4000 990162768441.dkr.ecr.eu-central-1.amazonaws.com/mk-repository:app'
