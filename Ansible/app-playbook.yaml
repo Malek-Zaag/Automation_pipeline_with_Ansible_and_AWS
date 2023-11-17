@@ -43,7 +43,7 @@
         state: present
 
     - name: Authenticate Docker to ECR
-      command: "AWS_ACCESS_KEY_ID={{ your_aws_access_key }} AWS_SECRET_ACCESS_KEY={{ your_aws_secret_key }} aws ecr get-login-password --region eu-central-1"
+      command: "aws ecr get-login-password --region eu-central-1"
       register: ecr_auth
       environment:
         AWS_ACCESS_KEY_ID: "{{ your_aws_access_key }}"
