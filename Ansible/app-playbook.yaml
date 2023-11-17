@@ -36,15 +36,13 @@
 
     - name: Configure AWS CLI with Access Key
       command: >
-                aws configure set aws_access_key_id "{{ AWS_ACCESS_KEY_ID }}"
-                && aws configure set aws_secret_access_key "{{ AWS_SECRET_ACCESS_KEY }}"
-                && aws configure set default.region "{{ eu-central-1 }}"
-      when: ansible_os_family == 'Debian'  # Adjust based on the OS family of your hosts               
+                aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+                && aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+                && aws configure set default.region "eu-central-1"
 
     - name: Log into AWS account
       command: aws sts get-caller-identity
       register: aws_login_output
-      when: ansible_os_family == 'Debian'  # Adjust based on the OS family of your hosts   
             
         
     - name: Log in to Amazon ECR
@@ -52,5 +50,5 @@
 
     - name: start app  
       command: 
-        cmd: 'docker run --name app -e DB_USER="admin" -e DB_PASS="admin" -e DB_HOST={{ DB_IP }} -p 4000:4000 990162768441.dkr.ecr.eu-central-1.amazonaws.com/mk-repository:app'
+        cmd: 'docker run --name app -e DB_USER="admin" -e DB_PASS="admin" -e DB_HOST={{DB_IP}} -p 4000:4000 990162768441.dkr.ecr.eu-central-1.amazonaws.com/mk-repository:app'
   
