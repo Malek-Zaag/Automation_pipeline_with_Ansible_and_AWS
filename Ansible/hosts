@@ -1,6 +1,6 @@
 [ec2_app]
-ip-one ansible_user=ec2-user ansible_ssh_private_key_file=/tmp/ec2-key-pair.pem ansible_python_interpreter=/usr/bin/python2
+ip-one ansible_user=ec2-user ansible_ssh_private_key_file=/tmp/ec2-key-pair.pem
 
 
 [ec2_db]
-ip-two ansible_user=ec2-user ansible_ssh_private_key_file=/tmp/ec2-key-pair.pem ansible_python_interpreter=/usr/bin/python2
+ip-two ansible_user=ec2-user ansible_ssh_private_key_file=/tmp/ec2-key-pair.pem 
