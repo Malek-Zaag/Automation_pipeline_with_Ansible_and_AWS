@@ -43,12 +43,11 @@
         state: present
 
     - name: Authenticate Docker to ECR
-      command: "{{ lookup('env', 'AWS_ACCESS_KEY_ID={0} AWS_SECRET_ACCESS_KEY={1} aws ecr get-login-password --region {2}') }}"
+      command: "aws ecr get-login-password --region eu-central-1"
       register: ecr_auth
       environment:
         AWS_ACCESS_KEY_ID: "{{ your_aws_access_key }}"
         AWS_SECRET_ACCESS_KEY: "{{ your_aws_secret_key }}"
-        AWS_DEFAULT_REGION: "{{ your_aws_region }}"
       changed_when: false
 
     - name: Run Docker login command
@@ -57,7 +56,6 @@
         AWS_ACCESS_KEY_ID: "{{ your_aws_access_key }}"
         AWS_SECRET_ACCESS_KEY: "{{ your_aws_secret_key }}"
       when: ecr_auth is succeeded
-
     - name: start app  
       command: 
         cmd: 'docker run --name app -e DB_USER="admin" -e DB_PASS="admin" -e DB_HOST={{DB_IP}} -p 4000:4000 990162768441.dkr.ecr.eu-central-1.amazonaws.com/mk-repository:app'
