@@ -36,12 +36,39 @@ tasks:
         name: docker-ce
         state: latest
         update_cache: true
-  - name: Log into private registry and force re-authorization
-    docker_login:
-      registry: your.private.registry.io
-      username: username
-      password: secrets3
-      reauthorize: yes
+  - name: Install AWS CLI, Configure Access Key, and Log In
+    hosts: your_hosts
+    become: yes
+    tasks:
+      - name: Install AWS CLI
+        apt:
+          name: awscli
+          state: present
+        when: ansible_os_family == 'Debian'  # Adjust based on the OS family of your hosts
+
+      - name: Configure AWS CLI with Access Key
+        command: >
+          aws configure set aws_access_key_id "{{ AWS_ACCESS_KEY_ID }}"
+          && aws configure set aws_secret_access_key "{{ AWS_SECRET_ACCESS_KEY }}"
+          && aws configure set default.region "{{ eu-central-1 }}"
+        when: ansible_os_family == 'Debian'  # Adjust based on the OS family of your hosts
+
+      - name: Log into AWS account
+        command: aws sts get-caller-identity
+        register: aws_login_output
+        when: ansible_os_family == 'Debian'  # Adjust based on the OS family of your hosts
+
+      - debug:
+          var: aws_login_output.stdout
+          
+  - name: Authenticate Docker to Amazon ECR
+    become: yes
+    tasks:
+      - name: Log in to Amazon ECR
+        ecr_login:
+          region: eu-central-1
+          registry_ids:
+            - 990162768441
 
   - name: start db  
     command: 

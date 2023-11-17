@@ -37,12 +37,6 @@ tasks:
         state: latest
         update_cache: true
 
-  - name: Log into private registry and force re-authorization
-    docker_login:
-      registry: your.private.registry.io
-      username: username
-      password: secrets3
-      reauthorize: yes
   - name: Install AWS CLI, Configure Access Key, and Log In
     hosts: your_hosts
     become: yes
