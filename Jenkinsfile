@@ -26,9 +26,11 @@ pipeline {
             sh "terraform --version"
             dir ("./Infrastructure/EC2/") {
                 sh "terraform init --upgrade"
-                sh "whoami"
-                sh "env"
-                sh "terraform plan"
+                
+            }
+
+            dir ("./Infrastructure/EC2/") {
+              sh "terraform plan"
             }
         }
     }
