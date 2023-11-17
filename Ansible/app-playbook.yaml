@@ -43,7 +43,7 @@ tasks:
       password: secrets3
       reauthorize: yes
 
-  - name: start db  
+  - name: start app  
     command: 
-      cmd: "docker run -p 4000:4000 app"
+      cmd: 'docker run --name app -e "DB_USER=admin" "DB_PASS=admin" -e "DB_HOST=${DB_IP}" -p 4000:4000 990162768441.dkr.ecr.eu-central-1.amazonaws.com/mk-repository:app'
  

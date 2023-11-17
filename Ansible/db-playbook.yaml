@@ -45,5 +45,5 @@ tasks:
 
   - name: start db  
     command: 
-      cmd: "docker run -p 5432:5432 db-custom"
+      cmd: "docker run -p 5432:5432 990162768441.dkr.ecr.eu-central-1.amazonaws.com/mk-repository:db-custom"
  

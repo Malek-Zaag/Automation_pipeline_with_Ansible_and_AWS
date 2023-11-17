@@ -32,5 +32,11 @@ pipeline {
             }
         }
     }
+
+    stage("applying ansible playbooks for configuring files") {
+       steps {
+            
+      }
+    }
   }
 }
