@@ -1,6 +1,8 @@
 - name:  install application
   hosts: ec2_app
   become: yes
+  vars_files:
+    - vars.yml
   tasks:
     - name: execute 'ls'
       command: ls
