@@ -53,28 +53,28 @@ resource "aws_security_group" "sg" {
     from_port   = 0
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/24"]
+    cidr_blocks = ["0.0.0.0/24"]
   }
 
   ingress {
     from_port   = 0
     to_port     = 4000
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/24"]
+    cidr_blocks = ["0.0.0.0/24"]
   }
 
   ingress {
     from_port   = 0
     to_port     = 23
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/24"]
+    cidr_blocks = ["0.0.0.0/24"]
   }
 
   ingress {
     from_port   = 0
     to_port     = 5432
     protocol    = "tcp"
-    cidr_blocks = ["10.0.0.0/24"]
+    cidr_blocks = ["0.0.0.0/24"]
   }
 
   egress {
