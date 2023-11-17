@@ -4,10 +4,10 @@
     - name: execute 'ls'
       command: ls
     - name: install updates
-      yum: update_cache=yes
+      ansible.builtin.dnf: update_cache=yes
     
     - name: Install required system packages
-      yum:
+      ansible.builtin.dnf:
         state: present
         name:
             - apt-transport-https
