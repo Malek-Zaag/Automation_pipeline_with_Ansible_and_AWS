@@ -1,13 +1,15 @@
 - name:  install application
   hosts: ec2_app
-  become: yes
+ 
   tasks:
     - name: execute 'ls'
       command: ls
     - name: install updates
+      become: yes
       yum: update_cache=yes
     
     - name: Install required system packages
+      become: yes
       yum:
         state: present
         name:
@@ -18,6 +20,7 @@
             - python3-setuptools
         update_cache: true
     - name: Yum repolist for Docker
+      become: yes
       yum_repository:
         name: docker
         description: yum repository for docker
