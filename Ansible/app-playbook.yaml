@@ -43,7 +43,7 @@
 
     - name: Install required packages
       vars: 
-        ansible_python_interpreter: /usr/bin/python
+        ansible_python_interpreter: /usr/bin/python3
       yum:
         name:
           - docker
