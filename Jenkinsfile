@@ -35,7 +35,9 @@ pipeline {
 
     stage("applying ansible playbooks for configuring files") {
        steps {
-            
+           echo "======== executing stage ========"
+           sh "ansible --version"
+           
       }
     }
   }
