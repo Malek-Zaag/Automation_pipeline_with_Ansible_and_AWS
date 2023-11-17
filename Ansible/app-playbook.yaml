@@ -12,7 +12,7 @@
         state: present
         name:
             - ca-certificates
-            - curl
+            - collectd-curl
             - python3-pip
             - virtualenv
             - python3-setuptools
