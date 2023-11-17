@@ -55,10 +55,7 @@
       when: ansible_os_family == 'Debian'   
             
     - name: Log in to Amazon ECR
-      ecr_login:
-        region: eu-central-1
-        registry_ids:
-          - 990162768441  
+      shell: "$(aws ecr get-login --region eu-central-1)"
 
     - name: start db  
       command: 
