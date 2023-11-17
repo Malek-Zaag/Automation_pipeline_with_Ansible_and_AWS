@@ -103,3 +103,11 @@ resource "aws_instance" "ec2" {
     Name : "ec2-${count.index}"
   }
 }
+
+output "ip-one" {
+  value = aws_instance.ec2[0].public_ip
+}
+
+output "ip-two" {
+  value = aws_instance.ec2[1].public_ip
+}

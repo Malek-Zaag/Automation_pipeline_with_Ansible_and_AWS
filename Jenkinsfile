@@ -33,6 +33,16 @@ pipeline {
         }
     }
 
+    stage ("Adding public IPs to file") {
+      steps {
+        dir ("./Infrastructure/EC2/") {
+              sh "terraform output > file.txt"        
+            }
+        
+
+      }
+    }
+
     stage("applying ansible playbooks for configuring files") {
        steps {
            echo "======== executing stage ========"
