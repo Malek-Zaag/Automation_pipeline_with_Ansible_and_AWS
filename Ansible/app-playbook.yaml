@@ -35,8 +35,9 @@
           update_cache: true
     
     - name: Install AWS CLI
+      become: yes
       apt:
-        name: aws-cli
+        name: awscli
         state: present
 
     - name: Authenticate Docker to ECR
