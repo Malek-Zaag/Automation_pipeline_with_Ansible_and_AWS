@@ -36,7 +36,7 @@ pipeline {
         dir ("./Infrastructure/EC2/") {
               sh "terraform output > file.txt"
               sh "cut -d '=' -f 2 file.txt"
-              sh "sed 's/\"//g; s/=//g' file.txt > res.txt"
+              sh "sed \'s/\"//g; s/=//g\' file.txt > res.txt"
               sh 'awk \' { t = $1; $1 = $2; $2 = t; print; } \' res.txt > res.txt' 
               sh "cat res.txt"
               sh 'sudo -- sh -c "cat res.txt >> /etc/hosts"'
