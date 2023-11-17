@@ -47,8 +47,8 @@ pipeline {
            echo "======== executing stage ========"
            sh "ansible --version"
            dir ("./Ansible/") {
-            sh "ansible -i hosts app-playbook.yaml"
-            sh "ansible -i hosts db-playbook.yaml"
+            sh "ansible-playbook -i hosts app-playbook.yaml"
+            sh "ansible-playbook -i hosts db-playbook.yaml"
            }        
       }
     }
