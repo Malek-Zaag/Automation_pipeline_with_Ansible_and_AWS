@@ -53,47 +53,18 @@
         - lvm2
         - amazon-linux-extras
 
-    - name: Add extras repository
-      shell: yum-config-manager --enable extras
-
-    - name: Enable Some packages from amazon-linux-extras packages
-      shell: "amazon-linux-extras enable python3.8 ansible2 docker"
-
-    - name: clean yum metadata cache
-      command: yum clean metadata
-      args:
-        warn: false
-
-    - name: Ensure a list of yum packages are installed
+    - name: Install required packages
       yum:
-        name: "{{ packages }}"
-        state: latest
-        update_cache: yes
-      vars:
-        packages:
-        - python3.8
-        - ansible
-        - docker
+        name:
+          - docker
+          - docker-compose
+        state: present
 
-    - name: Enable Docker CE service at startup
-      service:
+    - name: Start and enable Docker service
+      systemd:
         name: docker
         state: started
         enabled: yes
-
-    - name: Upgrade pip3
-      shell: "python3.8 -m pip install pip --upgrade"
-
-    - name: Ensure Python pip packages are installed
-      pip:
-        name: "{{ packages }}"
-        executable: /usr/local/bin/pip3.8
-      vars:
-        packages:
-        - boto
-        - boto3
-        - docker-compose
- 
 
     - name: Configure AWS CLI with Access Key
       command: >

@@ -34,27 +34,15 @@
     #       name: docker-ce
     #       state: latest
     #       update_cache: true
-    - name: Ensure a list of yum packages are installed
+    - name: Install required packages
       yum:
-        name: "{{ packages }}"
-        state: latest
-        update_cache: yes
-      vars:
-        packages:
-        - python-pip
-        - yum-utils
-        - device-mapper-persistent-data
-        - lvm2
-        - amazon-linux-extras
+        name:
+          - docker
+          - docker-compose
+        state: present
 
-    - name: Add extras repository
-      shell: yum-config-manager --enable extras
-
-    - name: Install docker-ce (centos) via amazon-linux-extras packages
-      shell: "amazon-linux-extras install docker=18.06.1 -y"
-
-    - name: Enable Docker CE service at startup
-      service:
+    - name: Start and enable Docker service
+      systemd:
         name: docker
         state: started
         enabled: yes
