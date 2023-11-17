@@ -17,37 +17,22 @@
             - virtualenv
             - python3-setuptools
         update_cache: true
+    - name: Yum repolist for Docker
+      yum_repository:
+        name: docker
+        description: yum repository for docker
+        baseurl: https://download.docker.com/linux/centos/7/x86_64/stable/
+        gpgcheck: no
 
-    # - name: Add Docker GPG apt Key
-    #   apt_key:
-    #       url: https://download.docker.com/linux/ubuntu/gpg
-    #       state: present
-
-    # - name: Add Docker Repository
-    #   apt_repository:
-    #       repo: deb https://download.docker.com/linux/ubuntu focal stable
-    #       state: present
-
-    # - name: Update apt and install docker-ce
-    #   apt:
-    #       name: docker-ce
-    #       state: latest
-    #       update_cache: true
-
-    - name: Update all packages
-      ansible.builtin.dnf:
-        name: '*'
-        state: latest
-        update_only: yes
-
-
-    - name: Install required packages
-      ansible.builtin.dnf:
-        name:
-          - docker
-          - docker-compose
-          - python3
+    - name: Package Installer For Docker
+      package:
+        name: docker-ce-3:18.09.1-3.el7
         state: present
+
+    - name: Package Installer For Python3 
+      package:
+        name: python3
+        state: present     
 
     - name: Start and enable Docker service
       systemd:
