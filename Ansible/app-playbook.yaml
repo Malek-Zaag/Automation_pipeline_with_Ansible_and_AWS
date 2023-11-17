@@ -34,24 +34,23 @@
           state: latest
           update_cache: true
     
-    - name:
-      command: curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip && unzip awscliv2.zip  && sudo ./aws/install"
-                
-               
+    - name: Install AWS CLI
+      apt:
+        name: aws-cli
+        state: present
 
-    - name: Configure AWS CLI with Access Key
-      command: >
-                aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-                && aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-                && aws configure set default.region "eu-central-1"
+    - name: Authenticate Docker to ECR
+      shell: "{{ lookup('env', 'AWS_ACCESS_KEY_ID={0} AWS_SECRET_ACCESS_KEY={1} aws ecr get-login-password --region {2}') | awk '{print $1, $3}' }}"
+      register: ecr_auth
+      environment:
+        AWS_ACCESS_KEY_ID: "{{ your_aws_access_key }}"
+        AWS_SECRET_ACCESS_KEY: "{{ your_aws_secret_key }}"
+        AWS_DEFAULT_REGION: "eu-central-1"
+      changed_when: false
 
-    - name: Log into AWS account
-      command: aws sts get-caller-identity
-      register: aws_login_output
-            
-        
-    - name: Log in to Amazon ECR
-      shell: "$(aws ecr get-login --region eu-central-1)"
+    - name: Run Docker login command
+      shell: "{{ ecr_auth.stdout }}"
+      when: ecr_auth is succeeded
 
     - name: start app  
       command: 
