@@ -41,12 +41,11 @@
         state: present
 
     - name: Authenticate Docker to ECR
-      shell: "{{ lookup('env', 'AWS_ACCESS_KEY_ID={0} AWS_SECRET_ACCESS_KEY={1} aws ecr get-login-password --region {2}') | awk '{print $1, $3}' }}"
+      command: "AWS_ACCESS_KEY_ID={{ your_aws_access_key }} AWS_SECRET_ACCESS_KEY={{ your_aws_secret_key }} aws ecr get-login-password --region {{ your_aws_region }}"
       register: ecr_auth
       environment:
         AWS_ACCESS_KEY_ID: "{{ your_aws_access_key }}"
         AWS_SECRET_ACCESS_KEY: "{{ your_aws_secret_key }}"
-        AWS_DEFAULT_REGION: "eu-central-1"
       changed_when: false
 
     - name: Run Docker login command
