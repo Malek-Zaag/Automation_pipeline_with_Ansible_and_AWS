@@ -8,9 +8,9 @@ ip-two
 
 [ec2_app:vars]
 ansbile_user=admin
-ansible_ssh_private_key_file=~/ec2-key-pair.pem
+ansible_ssh_private_key_file=/tmp/ec2-key-pair.pem
 
 
 [ec2_db:vars]
 ansbile_user=admin
-ansible_ssh_private_key_file=~/ec2-key-pair.pem
+ansible_ssh_private_key_file=/tmp/ec2-key-pair.pem
