@@ -5,8 +5,7 @@
       command: ls
 
     - name: update the packages
-      apt: 
-        update_cache: yes #apt get update
+      apt: update_cache=yes
     
     - name: Install required system packages
       apt:
