@@ -3,9 +3,6 @@
   tasks:
     - name: execute 'ls'
       command: ls
-
-    - name: update the packages
-      apt: update_cache=yes
     
     - name: Install required system packages
       apt:
