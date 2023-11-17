@@ -26,7 +26,7 @@ pipeline {
             }
 
             dir ("./Infrastructure/EC2/") {
-              sh "terraform plan"
+              sh "terraform apply"
             }
         }
     }
