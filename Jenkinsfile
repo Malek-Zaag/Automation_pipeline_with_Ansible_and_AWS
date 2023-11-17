@@ -21,12 +21,12 @@ pipeline {
             echo "======== executing stage ========"
             sh "terraform --version"
             dir ("./Infrastructure/EC2/") {
-                sh "terraform init --upgrade"
+                //sh "terraform init --upgrade"
                 
             }
 
             dir ("./Infrastructure/EC2/") {
-              sh "terraform apply --auto-approve"
+              //sh "terraform apply --auto-approve"
             }
         }
     }

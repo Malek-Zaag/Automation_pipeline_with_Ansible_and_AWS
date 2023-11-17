@@ -1,47 +1,38 @@
 - name:  install application
   hosts: ec2_app
- 
+  become: yes
   tasks:
     - name: execute 'ls'
       command: ls
     - name: install updates
-      become: yes
-      yum: update_cache=yes
+      apt: update_cache=yes
     
     - name: Install required system packages
-      become: yes
-      yum:
+      apt:
         state: present
         name:
             - ca-certificates
-            - collectd-curl
+            - curl
             - python3-pip
             - virtualenv
             - python3-setuptools
         update_cache: true
-    - name: Yum repolist for Docker
-      become: yes
-      yum_repository:
-        name: docker
-        description: yum repository for docker
-        baseurl: https://download.docker.com/linux/centos/7/x86_64/stable/
-        gpgcheck: no
 
-    - name: Package Installer For Docker
-      package:
-        name: docker-ce-3:18.09.1-3.el7
-        state: present
+    - name: Add Docker GPG apt Key
+      apt_key:
+          url: https://download.docker.com/linux/ubuntu/gpg
+          state: present
 
-    - name: Package Installer For Python3 
-      package:
-        name: python3
-        state: present     
+    - name: Add Docker Repository
+      apt_repository:
+          repo: deb https://download.docker.com/linux/ubuntu focal stable
+          state: present
 
-    - name: Start and enable Docker service
-      systemd:
-        name: docker
-        state: started
-        enabled: yes
+    - name: Update apt and install docker-ce
+      apt:
+          name: docker-ce
+          state: latest
+          update_cache: true
 
     - name: Configure AWS CLI with Access Key
       command: >
