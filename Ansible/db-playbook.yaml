@@ -43,13 +43,21 @@
         state: present
 
     - name: Authenticate Docker to ECR
-      command: "aws ecr get-login-password --region eu-central-1"
+      command: "{{ lookup('env', 'AWS_ACCESS_KEY_ID={0} AWS_SECRET_ACCESS_KEY={1} aws ecr get-login-password --region {2}') }}"
       register: ecr_auth
       environment:
         AWS_ACCESS_KEY_ID: "{{ your_aws_access_key }}"
         AWS_SECRET_ACCESS_KEY: "{{ your_aws_secret_key }}"
+        AWS_DEFAULT_REGION: "{{ your_aws_region }}"
       changed_when: false
 
+    - name: Run Docker login command
+      shell: "docker login -u AWS -p '{{ ecr_auth.stdout }}' 990162768441.dkr.ecr.eu-central-1.amazonaws.com/mk-repository"
+      environment:
+        AWS_ACCESS_KEY_ID: "{{ your_aws_access_key }}"
+        AWS_SECRET_ACCESS_KEY: "{{ your_aws_secret_key }}"
+      when: ecr_auth is succeeded
+      
     - name: start db  
       command: 
         cmd: "docker run -p 5432:5432 990162768441.dkr.ecr.eu-central-1.amazonaws.com/mk-repository:db-custom"
