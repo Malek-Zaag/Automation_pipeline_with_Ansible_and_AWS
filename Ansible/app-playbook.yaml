@@ -35,7 +35,7 @@
     #       update_cache: true
 
     - name: Update all packages
-      yum:
+      ansible.builtin.dnf:
         name: '*'
         state: latest
         update_only: yes
@@ -44,7 +44,7 @@
     - name: Install required packages
       vars: 
         ansible_python_interpreter: /usr/bin/python3
-      yum:
+      ansible.builtin.dnf:
         name:
           - docker
           - docker-compose
