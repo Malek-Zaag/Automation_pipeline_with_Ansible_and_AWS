@@ -1,5 +1,5 @@
 name:  install application
-hosts: ec2-db
+hosts: ec2_db
 tasks:
   - name: execute 'ls'
     command: ls

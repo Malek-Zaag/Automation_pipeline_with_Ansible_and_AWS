@@ -1,16 +1,16 @@
-[ec2-app]
+[ec2_app]
 ip-one
 
 
-[ec2-db]
+[ec2_db]
 ip-two
 
 
-[ec2-app:vars]
+[ec2_app:vars]
 ansbile_user=admin
 ansible_ssh_private_key_file=~/ec2-key-pair.pem
 
 
-[ec2-db:vars]
+[ec2_db:vars]
 ansbile_user=admin
 ansible_ssh_private_key_file=~/ec2-key-pair.pem
