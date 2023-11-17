@@ -54,14 +54,11 @@
       register: aws_login_output
       when: ansible_os_family == 'Debian'   
             
-    - name: Authenticate Docker to Amazon ECR
-      become: yes
-      tasks:
-        - name: Log in to Amazon ECR
-          ecr_login:
-            region: eu-central-1
-            registry_ids:
-              - 990162768441
+    - name: Log in to Amazon ECR
+      ecr_login:
+        region: eu-central-1
+        registry_ids:
+          - 990162768441  
 
     - name: start db  
       command: 
