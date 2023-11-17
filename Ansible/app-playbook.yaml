@@ -5,10 +5,10 @@
     - name: execute 'ls'
       command: ls
     - name: install updates
-      ansible.builtin.dnf: update_cache=yes
+      yum: update_cache=yes
     
     - name: Install required system packages
-      ansible.builtin.dnf:
+      yum:
         state: present
         name:
             - ca-certificates
