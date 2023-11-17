@@ -26,7 +26,7 @@ pipeline {
             }
 
             dir ("./Infrastructure/EC2/") {
-              sh "terraform apply --auto-approve"
+              //sh "terraform apply --auto-approve"
             }
         }
     }
@@ -36,6 +36,7 @@ pipeline {
         dir ("./Infrastructure/EC2/") {
               sh "terraform output > file.txt"
               sh "cut -d '=' -f 2 file.txt"
+              sh "sed 's/\"//g; s/=//g' file.txt "
             }
       }
     }
