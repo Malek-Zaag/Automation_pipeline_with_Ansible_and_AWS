@@ -40,24 +40,15 @@
         state: latest
         update_only: yes
 
-    - name: Ensure a list of yum packages are installed
-      yum:
-        name: "{{ packages }}"
-        state: latest
-        update_cache: yes
-      vars:
-        packages:
-        - python-pip
-        - yum-utils
-        - device-mapper-persistent-data
-        - lvm2
-        - amazon-linux-extras
 
     - name: Install required packages
+      vars: 
+        ansible_python_interpreter: /usr/bin/python
       yum:
         name:
           - docker
           - docker-compose
+          - python3
         state: present
 
     - name: Start and enable Docker service
