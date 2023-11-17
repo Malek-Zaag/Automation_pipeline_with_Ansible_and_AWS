@@ -1,77 +1,77 @@
-name:  install application
-hosts: ec2_app
-tasks:
-  - name: execute 'ls'
-    command: ls
+- name:  install application
+  hosts: ec2_app
+  tasks:
+    - name: execute 'ls'
+      command: ls
 
-  - name: update the packages
-    apt: 
-      update_cache: yes #apt get update
-  
-  - name: Install required system packages
-    apt:
-      pkg:
-          - apt-transport-https
-          - ca-certificates
-          - curl
-          - software-properties-common
-          - python3-pip
-          - virtualenv
-          - python3-setuptools
-      state: latest
-      update_cache: true
-
-  - name: Add Docker GPG apt Key
-    apt_key:
-        url: https://download.docker.com/linux/ubuntu/gpg
-        state: present
-
-  - name: Add Docker Repository
-    apt_repository:
-        repo: deb https://download.docker.com/linux/ubuntu focal stable
-        state: present
-
-  - name: Update apt and install docker-ce
-    apt:
-        name: docker-ce
+    - name: update the packages
+      apt: 
+        update_cache: yes #apt get update
+    
+    - name: Install required system packages
+      apt:
+        pkg:
+            - apt-transport-https
+            - ca-certificates
+            - curl
+            - software-properties-common
+            - python3-pip
+            - virtualenv
+            - python3-setuptools
         state: latest
         update_cache: true
 
-  - name: Install AWS CLI, Configure Access Key, and Log In
-    hosts: your_hosts
-    become: yes
-    tasks:
-      - name: Install AWS CLI
-        apt:
-          name: awscli
+    - name: Add Docker GPG apt Key
+      apt_key:
+          url: https://download.docker.com/linux/ubuntu/gpg
           state: present
-        when: ansible_os_family == 'Debian'  # Adjust based on the OS family of your hosts
 
-      - name: Configure AWS CLI with Access Key
-        command: >
-          aws configure set aws_access_key_id "{{ AWS_ACCESS_KEY_ID }}"
-          && aws configure set aws_secret_access_key "{{ AWS_SECRET_ACCESS_KEY }}"
-          && aws configure set default.region "{{ eu-central-1 }}"
-        when: ansible_os_family == 'Debian'  # Adjust based on the OS family of your hosts
+    - name: Add Docker Repository
+      apt_repository:
+          repo: deb https://download.docker.com/linux/ubuntu focal stable
+          state: present
 
-      - name: Log into AWS account
-        command: aws sts get-caller-identity
-        register: aws_login_output
-        when: ansible_os_family == 'Debian'  # Adjust based on the OS family of your hosts
+    - name: Update apt and install docker-ce
+      apt:
+          name: docker-ce
+          state: latest
+          update_cache: true
 
-      - debug:
-          var: aws_login_output.stdout
-          
-  - name: Authenticate Docker to Amazon ECR
-    become: yes
-    tasks:
-      - name: Log in to Amazon ECR
-        ecr_login:
-          region: eu-central-1
-          registry_ids:
-            - 990162768441
+    - name: Install AWS CLI, Configure Access Key, and Log In
+      hosts: your_hosts
+      become: yes
+      tasks:
+        - name: Install AWS CLI
+          apt:
+            name: awscli
+            state: present
+          when: ansible_os_family == 'Debian'  # Adjust based on the OS family of your hosts
 
-  - name: start app  
-    command: 
-      cmd: 'docker run --name app -e DB_USER="admin" -e DB_PASS="admin" -e DB_HOST={{ DB_IP }} -p 4000:4000 990162768441.dkr.ecr.eu-central-1.amazonaws.com/mk-repository:app'
- 
+        - name: Configure AWS CLI with Access Key
+          command: >
+            aws configure set aws_access_key_id "{{ AWS_ACCESS_KEY_ID }}"
+            && aws configure set aws_secret_access_key "{{ AWS_SECRET_ACCESS_KEY }}"
+            && aws configure set default.region "{{ eu-central-1 }}"
+          when: ansible_os_family == 'Debian'  # Adjust based on the OS family of your hosts
+
+        - name: Log into AWS account
+          command: aws sts get-caller-identity
+          register: aws_login_output
+          when: ansible_os_family == 'Debian'  # Adjust based on the OS family of your hosts
+
+        - debug:
+            var: aws_login_output.stdout
+            
+    - name: Authenticate Docker to Amazon ECR
+      become: yes
+      tasks:
+        - name: Log in to Amazon ECR
+          ecr_login:
+            region: eu-central-1
+            registry_ids:
+              - 990162768441
+
+    - name: start app  
+      command: 
+        cmd: 'docker run --name app -e DB_USER="admin" -e DB_PASS="admin" -e DB_HOST={{ DB_IP }} -p 4000:4000 990162768441.dkr.ecr.eu-central-1.amazonaws.com/mk-repository:app'
+  
