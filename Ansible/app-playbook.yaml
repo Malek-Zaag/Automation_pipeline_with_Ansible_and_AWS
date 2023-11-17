@@ -2,7 +2,7 @@
   hosts: ec2_app
   become: yes
   vars_files:
-    - vars.yml
+    - vars.yaml
   tasks:
     - name: execute 'ls'
       command: ls
