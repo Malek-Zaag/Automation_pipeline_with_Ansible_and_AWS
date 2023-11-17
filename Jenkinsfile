@@ -45,7 +45,11 @@ pipeline {
     stage("applying ansible playbooks for configuring files") {
        steps {
            echo "======== executing stage ========"
-           sh "ansible --version"        
+           sh "ansible --version"
+           dir ("./Ansible/") {
+            sh "ansible -i hosts app-playbook.yaml"
+            sh "ansible -i hosts db-playbook.yaml"
+           }        
       }
     }
   }
