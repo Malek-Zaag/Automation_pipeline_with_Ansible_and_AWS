@@ -12,7 +12,6 @@
       ansible.builtin.dnf:
         state: present
         name:
-            - apt-transport-https
             - ca-certificates
             - curl
             - software-properties-common
