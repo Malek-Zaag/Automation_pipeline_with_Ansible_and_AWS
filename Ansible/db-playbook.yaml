@@ -34,43 +34,31 @@
     #       name: docker-ce
     #       state: latest
     #       update_cache: true
-    - name: set mydistribution
-      ansible.builtin.set_fact:
-        mydistribution: "{{ 'rhel' if (ansible_distribution == 'Red Hat Enterprise Linux') else (ansible_distribution | lower) }}"
-
-    - name: Add signing key
-      ansible.builtin.rpm_key:
-        key: "https://download.docker.com/linux/{{ mydistribution }}/gpg"
-        state: present
-
-    - name: Add repository into repo.d list
-      ansible.builtin.yum_repository:
-        name: docker
-        description: docker repository
-        baseurl: "https://download.docker.com/linux/{{ mydistribution }}/$releasever/$basearch/stable"
-        enabled: true
-        gpgcheck: true
-        gpgkey: "https://download.docker.com/linux/{{ mydistribution }}/gpg"
-
-    - name: Install Docker
-      ansible.builtin.yum:
-        name:
-          - docker-ce
-          - docker-ce-cli
-          - containerd.io
+    - name: Ensure a list of yum packages are installed
+      yum:
+        name: "{{ packages }}"
         state: latest
-        update_cache: true
+        update_cache: yes
+      vars:
+        packages:
+        - python-pip
+        - yum-utils
+        - device-mapper-persistent-data
+        - lvm2
+        - amazon-linux-extras
 
-    - name: Start Docker
-      ansible.builtin.service:
-        name: "docker"
-        enabled: true
+    - name: Add extras repository
+      shell: yum-config-manager --enable extras
+
+    - name: Install docker-ce (centos) via amazon-linux-extras packages
+      shell: "amazon-linux-extras install docker=18.06.1 -y"
+
+    - name: Enable Docker CE service at startup
+      service:
+        name: docker
         state: started
-    - name: Install AWS CLI
-      apt:
-            name: awscli
-            state: present
-      when: ansible_os_family == 'Debian'  # Adjust based on the OS family of your hosts    
+        enabled: yes
+  
 
     - name: Configure AWS CLI with Access Key
       command: >
