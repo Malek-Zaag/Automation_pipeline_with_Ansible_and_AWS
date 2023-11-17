@@ -6,4 +6,4 @@ Infrastructure/EC2/.terraform.lock.hcl
 Infrastructure/Jenkins Server/.terraform/providers/registry.terraform.io/azure/azapi/1.10.0/windows_amd64/terraform-provider-azapi_v1.10.0.exe
 Infrastructure/Jenkins Server/.terraform/providers/registry.terraform.io/hashicorp/azurerm/3.79.0/windows_amd64/terraform-provider-azurerm_v3.79.0_x5.exe
 *terraform.*
-Ansible/vars.yaml
+
