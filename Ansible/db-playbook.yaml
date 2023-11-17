@@ -1,5 +1,6 @@
 - name:  install database
   hosts: ec2_db
+  become: yes
   tasks:
     - name: execute 'ls'
       command: ls

@@ -1,5 +1,6 @@
 - name:  install application
   hosts: ec2_app
+  become: yes
   tasks:
     - name: execute 'ls'
       command: ls
