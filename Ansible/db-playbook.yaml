@@ -57,6 +57,6 @@
         AWS_SECRET_ACCESS_KEY: "{{ your_aws_secret_key }}"
       when: ecr_auth is succeeded
 
-    - name: start db  
-      command: "docker run -p 5432:5432 990162768441.dkr.ecr.eu-central-1.amazonaws.com/mk-repository:db-custom" 
+    # - name: start db  
+    #   command: "docker run -p 5432:5432 990162768441.dkr.ecr.eu-central-1.amazonaws.com/mk-repository:db-custom" 
   
