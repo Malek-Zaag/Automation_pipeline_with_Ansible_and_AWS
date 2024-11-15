@@ -1,4 +1,4 @@
-FROM postgres:17.0-bullseye
+FROM postgres:17.1-bullseye
 
 ENV POSTGRES_USER=admin
 ENV POSTGRES_PASSWORD=admin
